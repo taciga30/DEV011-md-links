@@ -20,25 +20,28 @@ const routeExist = (relativeToAbsolute) => {
   return fs.existsSync(relativeToAbsolute);
 }; 
 // --------------------Validar que el archivo de la ruta sea Markdown  
-if (extension === ".md" ||
-      ".mkd" ||
-      ".mdwn" ||
-      ".mdown" ||
-      ".mdtxt" ||
-      ".mdtext" ||
-      ".markdown" ||
-      ".text"
-    ) {
+
+const validateExt = (route) => {
+  return extension(route) === ".md" ||
+  ".mkd" ||
+  ".mdwn" ||
+  ".mdown" ||
+  ".mdtxt" ||
+  ".mdtext" ||
+  ".markdown" ||
+  ".text" ? true : 'archivo inválido';
+};
+
       //----------------------Leer el archivo y mostrar el contenido en un console.log()
-      const readMd = (route) => {
-        try {
-      const readData = fs.readFile(route, 'utf8');
-      console.log(readData);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
+    //   const readMd = (route) => {
+    //     try {
+    //   const readData = fs.readFile(route, 'utf8');
+    //   console.log(readData);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    // }
       //---------------------Extraer los links del archivo en un array de objetos
   //    else {
   //     // console.log("El archivo no es de tipo .md, .mkd, .mdwn, .mdown, .mdtxt, .mdtext, .markdown, .text");
@@ -52,5 +55,6 @@ module.exports = {
   routeIsAbsolute,
   relativeToAbsolute,
   routeExist,
-  extension
+  extension,
+  validateExt
 };
