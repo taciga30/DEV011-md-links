@@ -4,9 +4,15 @@
   "engines": {
     "node": ">=16.x"
   },
+  "scripts": {
+    "test": "jest --coverage"
+  },
   "bootcamp": {
     "createdAt": "2023-09-22T12:23:39.903Z",
     "version": "7.1.0",
     "commit": "d257c41694344460623eb1f1bb2a690bdfe33f83"
+  },
+  "dependencies": {
+    "jest": "^29.7.0"
   }
 }
