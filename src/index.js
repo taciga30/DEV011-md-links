@@ -8,7 +8,13 @@ const mdLinks = (path) => {
     const routeAbsolute = relativeToAbsolute(path)
     const validateRoute = routeExist(path)
     const mostrarExt = extension(path)
-    resolve(validateRoute, mostrarExt, routeAbsolute, validateAbsolute)
+    const functions ={
+      validateAbsolute,
+      routeAbsolute,
+      validateRoute,
+      mostrarExt
+    }
+    resolve(functions);
     // Si no existe la ruta rechaza la promesa
     reject("La ruta no existe");
   });
