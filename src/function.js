@@ -1,6 +1,8 @@
 //módulos de node.js
 const path = require("path");
 const fs = require("fs");
+const readFile = require('fs/promises');
+
 
 // ------------------Validar si la ruta es absoluta
 // .isAbsolute es un método de path, valida si la ruta es absoluta y devuelve true
@@ -33,15 +35,13 @@ const validateExt = (route) => {
 };
 
       //----------------------Leer el archivo y mostrar el contenido en un console.log()
-    //   const readMd = (route) => {
-    //     try {
-    //   const readData = fs.readFile(route, 'utf8');
-    //   console.log(readData);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    // }
+      const readMd = (route) => {
+      const readData = readFile.readFile(route, 'utf8');
+      return readData;
+      };
+  
+  
+    
       //---------------------Extraer los links del archivo en un array de objetos
   //    else {
   //     // console.log("El archivo no es de tipo .md, .mkd, .mdwn, .mdown, .mdtxt, .mdtext, .markdown, .text");
@@ -56,5 +56,6 @@ module.exports = {
   relativeToAbsolute,
   routeExist,
   extension,
-  validateExt
+  validateExt,
+  readMd
 };

@@ -1,10 +1,11 @@
-const { mdLinks,  } = require('../src/index');
+const { mdLinks } = require('../src/index');
 const { routeIsAbsolute, relativeToAbsolute } = require('../src/function');
 
 describe('mdLinks', () => {
 
   it('Debería devolver una promesa', () => {
-    expect(mdLinks()).toBe(typeof Promise);
+    const resultado = mdLinks('./README.md');
+    expect(typeof (resultado.then)).toBe('function');
   });
 
   it('Debería rechazar cuando el path no existe', () => {

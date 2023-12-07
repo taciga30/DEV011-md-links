@@ -1,5 +1,5 @@
 
-const { routeIsAbsolute, relativeToAbsolute, routeExist, extension, validateExt } = require("./function");
+const { routeIsAbsolute, relativeToAbsolute, routeExist, extension, validateExt, readMd } = require("./function");
 
 const mdLinks = (path) => {
   // resolve y reject son funciones que se convierten en callbacks en el then y el catch
@@ -9,13 +9,18 @@ const mdLinks = (path) => {
     const validateRoute = routeExist(path);
     const mostrarExt = extension(path);
     const validateExtFile = validateExt(path);
+    const readFile = readMd(path);
+    readFile.then(res => console.log({res}))
+    .catch(err => console.log(err))
     const functions ={
       validateAbsolute,
       routeAbsolute,
       validateRoute,
       mostrarExt,
-      validateExtFile
+      validateExtFile,
+      readFile
     }
+    
     resolve(functions);
     // Si no existe la ruta rechaza la promesa
     reject("La ruta no existe");
