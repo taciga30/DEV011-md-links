@@ -1,8 +1,9 @@
 //módulos de node.js
 const path = require("path");
 const fs = require("fs");
-const readFile = require('fs/promises');
-
+const readFileFsPromise = require("fs/promises");
+const marked = require("marked");
+const { JSDOM } = require("jsdom");
 
 // ------------------Validar si la ruta es absoluta
 // .isAbsolute es un método de path, valida si la ruta es absoluta y devuelve true
@@ -20,36 +21,57 @@ const extension = (route) => path.extname(route);
 // -------------------Comprobar si la ruta existe en el computador
 const routeExist = (relativeToAbsolute) => {
   return fs.existsSync(relativeToAbsolute);
-}; 
-// --------------------Validar que el archivo de la ruta sea Markdown  
+};
+// --------------------Validar que el archivo de la ruta sea Markdown
 
 const validateExt = (route) => {
+  console.log(extension(route));
   return extension(route) === ".md" ||
-  ".mkd" ||
-  ".mdwn" ||
-  ".mdown" ||
-  ".mdtxt" ||
-  ".mdtext" ||
-  ".markdown" ||
-  ".text" ? true : 'archivo inválido';
+    ".mkd" ||
+    ".mdwn" ||
+    ".mdown" ||
+    ".mdtxt" ||
+    ".mdtext" ||
+    ".markdown" ||
+    ".text"
+    ? true
+    : "archivo inválido";
 };
 
-      //----------------------Leer el archivo y mostrar el contenido en un console.log()
-      const readMd = (route) => {
-      const readData = readFile.readFile(route, 'utf8');
-      return readData;
-      };
-  
-  
-    
-      //---------------------Extraer los links del archivo en un array de objetos
-  //    else {
-  //     // console.log("El archivo no es de tipo .md, .mkd, .mdwn, .mdown, .mdtxt, .mdtext, .markdown, .text");
-    
-  // } else {
-  //   // throw new Error("La ruta no existe");
-  // }
+//----------------------Leer el archivo y mostrar el contenido en un console.log()
+// const readMd = (route) => {
+// const readData = readFileFsPromise.readFile(route, 'utf-8');
+// const linksExtracted = extractLinks(readData)
+// return linksExtracted;
+// };
+const readMd = (route) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(route, "utf-8", (err, data) => {
+      if (err) reject("Error al leer el archivo");
+      resolve(data);
+    });
+  });
+};
+//---------------------Extraer los links del archivo en un array de objetos
 
+const extractLinks = (data, file) => {
+  const arrObjs = [];
+  const html = marked.parse(data);
+  const dom = new JSDOM(html);
+  const nodeListA = dom.window.document.querySelectorAll("a");
+  nodeListA.forEach((atag) => {
+    if (atag.href.startsWith("http://") || atag.href.startsWith("https://")){
+      arrObjs.push({
+        href: atag.href,
+        text: atag.textContent,
+        file
+      });
+    }
+  });
+  console.log(arrObjs.length);
+  return arrObjs;
+  
+};
 
 module.exports = {
   routeIsAbsolute,
@@ -57,5 +79,6 @@ module.exports = {
   routeExist,
   extension,
   validateExt,
-  readMd
+  readMd,
+  extractLinks,
 };

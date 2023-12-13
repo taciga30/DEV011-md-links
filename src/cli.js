@@ -10,5 +10,5 @@ const routeUser = process.argv[2];
 // }
 
 mdLinks(routeUser)
-  .then((res) => console.log("Esta es la respuesta", res))
-  .catch((error) => console.log("Este es el error", error));
+  .then((res) => console.log("Esta es la respuesta: ", res))
+  .catch((error) => console.log("Este es el error: ", error));
