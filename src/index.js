@@ -1,28 +1,29 @@
-const fs = require('fs')
-const functions = require('./function');
+const {
+  routeIsAbsolute,
+  relativeToAbsolute,
+  routeExist,
+  extension,
+  validateExt,
+  readMd,
+  extractLinks,
+} = require("./function");
 
-const mdLinks = (path, options) => {
+const mdLinks = (path) => {
   // resolve y reject son funciones que se convierten en callbacks en el then y el catch
   return new Promise((resolve, reject) => {
-  // Identifica si la ruta existe
-    if(fs.existsSync(path)){
-  // Validar si la ruta es 
-  
-  //Si no es absoluta convertirla
+    const routeAbsolute = relativeToAbsolute(path);
 
-  //Comprobar si la ruta existe en el computador
-
-  //Verificar la extensión del archivo
-
-    }else{
-  // Si no existe la ruta rechaza la promesa    
-      reject('La ruta no existe');
-    }
-   
+    routeExist(routeAbsolute).catch((err) => reject(err));
+    
+    readMd(routeAbsolute)
+      .then((data) => {
+        const linksExtracted = extractLinks(data, routeAbsolute);
+        resolve(linksExtracted);
+      })
+      .catch((err) => reject(err));
   });
-
-}
+};
 
 module.exports = {
-mdLinks
+  mdLinks,
 };
