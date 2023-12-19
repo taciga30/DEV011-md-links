@@ -2,7 +2,7 @@ const { mdLinks } = require("./index");
 
 // const validateLinks = process.argv.includes("--validate");
 const routeUser = process.argv[2];
-// console.log(validateLinks, routeUser);
+// console.log(routeUser, validateLinks);
 // if(validateLinks){
 // // se ejecuta la función de validar links
 // }else{

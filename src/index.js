@@ -13,13 +13,14 @@ const mdLinks = (path) => {
   return new Promise((resolve, reject) => {
     const routeAbsolute = relativeToAbsolute(path);
 
+    routeExist(routeAbsolute).catch((err) => reject(err));
+    
     readMd(routeAbsolute)
       .then((data) => {
         const linksExtracted = extractLinks(data, routeAbsolute);
         resolve(linksExtracted);
       })
-      .catch((err) => reject(err)); 
-
+      .catch((err) => reject(err));
   });
 };
 

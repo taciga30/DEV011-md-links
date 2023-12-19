@@ -1,7 +1,6 @@
 //módulos de node.js
 const path = require("path");
 const fs = require("fs");
-const readFileFsPromise = require("fs/promises");
 const marked = require("marked");
 const { JSDOM } = require("jsdom");
 
@@ -20,30 +19,34 @@ const extension = (route) => path.extname(route);
 
 // -------------------Comprobar si la ruta existe en el computador
 const routeExist = (relativeToAbsolute) => {
-  return fs.existsSync(relativeToAbsolute);
+  return new Promise((resolve, reject) => {
+    fs.access(relativeToAbsolute, (err, data) => {
+      if (err) {
+        reject("La ruta no existe");
+      } else {
+        resolve(data);
+      }
+    });
+  });
 };
 // --------------------Validar que el archivo de la ruta sea Markdown
 
 const validateExt = (route) => {
-  console.log(extension(route));
-  return extension(route) === ".md" ||
-    ".mkd" ||
-    ".mdwn" ||
-    ".mdown" ||
-    ".mdtxt" ||
-    ".mdtext" ||
-    ".markdown" ||
-    ".text"
-    ? true
-    : "archivo inválido";
+  const ext = extension(route);
+  return (
+    ext === ".md" ||
+    ext === ".mkd" ||
+    ext === ".mdwn" ||
+    ext === ".mdown" ||
+    ext === ".mdtxt" ||
+    ext === ".mdtext" ||
+    ext === ".markdown" ||
+    ext === ".text"
+  );
 };
 
 //----------------------Leer el archivo y mostrar el contenido en un console.log()
-// const readMd = (route) => {
-// const readData = readFileFsPromise.readFile(route, 'utf-8');
-// const linksExtracted = extractLinks(readData)
-// return linksExtracted;
-// };
+
 const readMd = (route) => {
   return new Promise((resolve, reject) => {
     fs.readFile(route, "utf-8", (err, data) => {
@@ -52,6 +55,7 @@ const readMd = (route) => {
     });
   });
 };
+
 //---------------------Extraer los links del archivo en un array de objetos
 
 const extractLinks = (data, file) => {
@@ -60,17 +64,15 @@ const extractLinks = (data, file) => {
   const dom = new JSDOM(html);
   const nodeListA = dom.window.document.querySelectorAll("a");
   nodeListA.forEach((atag) => {
-    if (atag.href.startsWith("http://") || atag.href.startsWith("https://")){
+    if (atag.href.startsWith("http://") || atag.href.startsWith("https://")) {
       arrObjs.push({
         href: atag.href,
         text: atag.textContent,
-        file
+        file,
       });
     }
   });
-  console.log(arrObjs.length);
   return arrObjs;
-  
 };
 
 module.exports = {
