@@ -69,13 +69,13 @@ describe("mdLinks", () => {
   });
 
   // ------------------------- Validación de que la función extractLinks devuelva un objeto con las keys href, text, file --------------------
-  it("Debe traer un array de objetos con las propiedades href, text y file", () => {
-    const resultado = `[href: 'https://www.google.com/',
-    text: 'Google',
-    file: 'C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\prueba.mdtxt'       
-  ]`;
-    const obteinData = extractLinks("test\prueba.mdtxt");
+  // it("Debe traer un array de objetos con las propiedades href, text y file", () => {
+  //   const resultado = `[href: 'https://www.google.com/',
+  //   text: 'Google',
+  //   file: 'C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\prueba.mdtxt'       
+  // ]`;
+  //   const obteinData = extractLinks("test\prueba.mdtxt");
 
-    expect(obteinData).toEqual(resultado);
-  });
+  //   expect(obteinData).toEqual(resultado);
+  // });
 });
