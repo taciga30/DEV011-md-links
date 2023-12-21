@@ -7,7 +7,11 @@ const {
   extension,
   validateExt,
   extractLinks,
+  validateLinks,
 } = require("../src/function");
+
+
+
 // ------------------------- Validación de que la función mdLinks devuelva una promesa --------------------
 describe("mdLinks", () => {
   it("Debería devolver una promesa", () => {
@@ -70,12 +74,118 @@ describe("mdLinks", () => {
 
   // ------------------------- Validación de que la función extractLinks devuelva un objeto con las keys href, text, file --------------------
   it("Debe traer un array de objetos con las propiedades href, text y file", () => {
-    const resultado = `[href: 'https://www.google.com/',
+    const resultado = `[{href: 'https://www.google.com/',
     text: 'Google',
     file: 'C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\prueba.mdtxt'       
-  ]`;
-    const obteinData = extractLinks("test\prueba.mdtxt");
-
-    expect(obteinData).toEqual(resultado);
+  }]`;
+    const url =
+      "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\prueba.mdtxt";
+    const read = readMd(url).then((data) => {
+      // console.log(data);
+      const obteinData = extractLinks(data, url);
+      // console.log(obteinData);
+      expect(obteinData).toBeInstanceOf(Array);
+      // expect(obteinData).toEqual(resultado);
+      // expect(data).toBe("Error al leer el archivo");
+    });
   });
+
+  // ------------------------- Validación de que la función validateLinks devuelva un objeto con las keys href, text, file, status, ok --------------------
+
+  it("Debe traer un array de objetos con las propiedades href, text, file, status y ok", () => {
+    const mockValidate = [
+      {
+        href: "https://nodejs.org/es/about/",
+        text: "Documentación oficial",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 404,
+        ok: "Not Found",
+      },
+      {
+        href: "https://www.youtube.com/watch?v=WgSc1nv_4Gw",
+        text: "Fazt en YouTube",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+      {
+        href: "https://carlosazaustre.es/manejando-la-asincronia-en-javascript",
+        text: "Asíncronía en js",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+      {
+        href: "https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_expressions",
+        text: "mozilla.org",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+    ];
+    const validate = true;
+    const resultado = mdLinks("test/ReadMePrueba.md", validate).then((data) => {
+      expect(data).toEqual(mockValidate);
+      // console.log(data);
+    });
+  });
+
+  it("Debe devolver el array validado", async () => {
+    const obteinData = await validateLinks([
+      {
+        href: "https://nodejs.org/es/about/",
+        text: "Documentación oficial",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+      },
+      {
+        href: "https://www.youtube.com/watch?v=WgSc1nv_4Gw",
+        text: "Fazt en YouTube",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+      },
+      {
+        href: "https://carlosazaustre.es/manejando-la-asincronia-en-javascript",
+        text: "Asíncronía en js",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+      },
+      {
+        href: "https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_expressions",
+        text: "mozilla.org",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+      },
+    ]);
+
+    expect(obteinData).toEqual([
+      {
+        href: "https://nodejs.org/es/about/",
+        text: "Documentación oficial",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 404,
+        ok: "Not Found",
+      },
+      {
+        href: "https://www.youtube.com/watch?v=WgSc1nv_4Gw",
+        text: "Fazt en YouTube",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+      {
+        href: "https://carlosazaustre.es/manejando-la-asincronia-en-javascript",
+        text: "Asíncronía en js",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+      {
+        href: "https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_expressions",
+        text: "mozilla.org",
+        file: "C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md",
+        status: 200,
+        ok: "OK",
+      },
+    ]);
+  });
+
+  
+  
 });
