@@ -78,7 +78,7 @@ const extractLinks = (data, file) => {
   return arrObjs;
 };
 
-const validateLinks = (arrObjs) => {
+const validateLinks = (arrObjs=[]) => {
   const arrObjsModificado = arrObjs.map((element) => {
     // console.log(element);
     return axios.get(element.href)
@@ -86,7 +86,7 @@ const validateLinks = (arrObjs) => {
       return {
         ...element,
         status: response.status,
-        statusText: response.statusText
+        ok: response.statusText
       }
     })
     .catch((error) => {

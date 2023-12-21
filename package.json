@@ -5,7 +5,7 @@
     "node": ">=16.x"
   },
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage --verbose"
   },
   "bootcamp": {
     "createdAt": "2023-09-22T12:23:39.903Z",
