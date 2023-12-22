@@ -4,7 +4,7 @@ const fs = require("fs");
 const marked = require("marked");
 const { JSDOM } = require("jsdom");
 
-const axios = require ("axios");
+const axios = require("axios");
 
 // ------------------Validar si la ruta es absoluta
 // .isAbsolute es un método de path, valida si la ruta es absoluta y devuelve true
@@ -68,7 +68,7 @@ const extractLinks = (data, file) => {
   const nodeListA = dom.window.document.querySelectorAll("a");
   nodeListA.forEach((atag) => {
     if (atag.href.startsWith("http://") || atag.href.startsWith("https://")) {
-        arrObjs.push({
+      arrObjs.push({
         href: atag.href,
         text: atag.textContent,
         file,
@@ -78,29 +78,53 @@ const extractLinks = (data, file) => {
   return arrObjs;
 };
 
-const validateLinks = (arrObjs=[]) => {
+const validateLinks = (arrObjs = []) => {
   const arrObjsModificado = arrObjs.map((element) => {
     // console.log(element);
-    return axios.get(element.href)
-    .then((response) =>{
-      return {
-        ...element,
-        status: response.status,
-        ok: response.statusText
-      }
-    })
-    .catch((error) => {
-      return{
-        ...element,
-        status: error.response.status,
-        ok: error.response.statusText,
-      }
-    })
-  })
-  
-  return Promise.all(arrObjsModificado);    
+    return axios
+      .get(element.href)
+      .then((response) => {
+        return {
+          ...element,
+          status: response.status,
+          ok: response.statusText,
+        };
+      })
+      .catch((error) => {
+        return {
+          ...element,
+          status: error.response.status,
+          ok: error.response.statusText,
+        };
+      });
+  });
+
+  return Promise.all(arrObjsModificado);
 };
 
+const statsLinks = (arrObjs, validate) => {
+  const promiseValidate = validateLinks(arrObjs)
+  return promiseValidate.then((arrayValidate)=>{
+    // console.log(arrayValidate);
+  
+  // nos da la longitud del array
+  const totalLinks = arrObjs.length;
+  // nos da un array con enlaces unicos, se utiliza el operador spread (...) junto con el constructor Set para eliminar los elementos duplicados
+  const uniqueLinks = [...new Set(arrayValidate.map((link) => link.href))];
+  // const uniqueError = arrayValidate.map((link) => link.statusText);
+  // console.log(uniqueError);
+  // nos devuelve una cadena de texto
+  const resultStats =
+    "Total: " + totalLinks + "\nUnique: " + uniqueLinks.length;
+  // nos devuelve un array con los enlaces que no son ok
+  const brokenLinks = arrayValidate.filter((link) => link.status !== 200);
+  // console.log(brokenLinks);
+  if (validate && brokenLinks) {
+    return resultStats + "\nBroken: " + brokenLinks.length;
+  }
+  return resultStats;
+});
+};
 
 module.exports = {
   routeIsAbsolute,
@@ -110,5 +134,6 @@ module.exports = {
   validateExt,
   readMd,
   extractLinks,
-  validateLinks
+  validateLinks,
+  statsLinks,
 };
