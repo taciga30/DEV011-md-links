@@ -1,4 +1,4 @@
-const { mdLinks } = require("../src/index");
+const { mdLinks,  } = require("../src/index");
 const {
   routeIsAbsolute,
   relativeToAbsolute,
@@ -8,6 +8,7 @@ const {
   validateExt,
   extractLinks,
   validateLinks,
+  // statsLinks
 } = require("../src/function");
 
 
@@ -186,6 +187,10 @@ describe("mdLinks", () => {
     ]);
   });
 
-  
+//   it("Debe devolver las estadísticas de los links validados", () => {
+//     const resultado = { Total: 4, Unique: 4, Broken: 1 };
+//     const stastTest = statsLinks("test/ReadMePrueba.md", '--validate --stats');
+//     expect(stastTest).toEqual(resultado);
+// });
   
 });

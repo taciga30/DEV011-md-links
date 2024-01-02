@@ -1,12 +1,6 @@
 const {
-    // routeIsAbsolute,
-    // relativeToAbsolute,
-    // readMd,
-    // routeExist,
-    // extension,
-    // validateExt,
-    // extractLinks,
     validateLinks,
+    statsLinks
 } = require("../src/function");
 
 const axios = require("axios");
@@ -32,7 +26,6 @@ describe("functions", () => {
         );
         const validate = validateLinks(array);
         validate.then((links) => {
-            // console.log(links);
             expect(links).toEqual([
                 {
                     href: "https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_expressions",
@@ -44,5 +37,11 @@ describe("functions", () => {
             ]);
             done();
         });
+    });
+
+    it("Debe devolver las estadísticas de los links validados", () => {
+        const resultado = { Total: 4, Unique: 4, Broken: 1 };
+        const stastTest = statsLinks("test/ReadMePrueba.md", '--validate --stats');
+        expect(stastTest).toEqual(resultado);
     });
 });

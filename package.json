@@ -1,9 +1,10 @@
 {
-  "name": "md-links",
+  "name": "taciga-md-links",
   "version": "0.1.0",
   "engines": {
     "node": ">=16.x"
   },
+  "description": "Lee los links externos de un archivo de tipo markdown y devuelve un array de objetos con las propiedades href(el enlace), text(nombre asignado al enlace) y file(ruta del archivo), si se le pasa el argumento --validate se validaran los links y devolverá un array de objetos con las propiedades href(el enlace), text(nombre asignado al enlace), file(ruta del archivo), status(# validación) y ok(texto correspondiente al estado de la validación), si se le pasan los argumentos --validate y --stats devolverá un objeto con las estadisticas del Total de links, el total de links únicos, y el total de links rotos, finalmente si solo se pasa el parámetro stats devolvera las estadísticas de Total de links y el total de links únicos ",
   "scripts": {
     "test": "jest --coverage --verbose"
   },
