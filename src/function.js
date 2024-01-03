@@ -103,27 +103,27 @@ const validateLinks = (arrObjs = []) => {
 };
 
 const statsLinks = (arrObjs, validate) => {
-  const promiseValidate = validateLinks(arrObjs)
-  return promiseValidate.then((arrayValidate)=>{
+  const promiseValidate = validateLinks(arrObjs);
+  return promiseValidate.then((arrayValidate) => {
     // console.log(arrayValidate);
-  
-  // nos da la longitud del array
-  const totalLinks = arrObjs.length;
-  // nos da un array con enlaces unicos, se utiliza el operador spread (...) junto con el constructor Set para eliminar los elementos duplicados
-  const uniqueLinks = [...new Set(arrayValidate.map((link) => link.href))];
-  // const uniqueError = arrayValidate.map((link) => link.statusText);
-  // console.log(uniqueError);
-  // nos devuelve una cadena de texto
-  const resultStats =
-    "Total: " + totalLinks + "\nUnique: " + uniqueLinks.length;
-  // nos devuelve un array con los enlaces que no son ok
-  const brokenLinks = arrayValidate.filter((link) => link.status !== 200);
-  // console.log(brokenLinks);
-  if (validate && brokenLinks) {
-    return resultStats + "\nBroken: " + brokenLinks.length;
-  }
-  return resultStats;
-});
+
+    // nos da la longitud del array
+    const totalLinks = arrObjs.length;
+    // nos da un array con enlaces unicos, se utiliza el operador spread (...) junto con el constructor Set para eliminar los elementos duplicados
+    const uniqueLinks = [...new Set(arrayValidate.map((link) => link.href))];
+    // const uniqueError = arrayValidate.map((link) => link.statusText);
+    // console.log(uniqueError);
+    // nos devuelve una cadena de texto
+    const resultStats =
+      "Total: " + totalLinks + "\nUnique: " + uniqueLinks.length;
+    // nos devuelve un array con los enlaces que no son ok
+    const brokenLinks = arrayValidate.filter((link) => link.status !== 200);
+    // console.log(brokenLinks);
+    if (validate && brokenLinks) {
+      return resultStats + "\nBroken: " + brokenLinks.length;
+    }
+    return resultStats;
+  });
 };
 
 module.exports = {
