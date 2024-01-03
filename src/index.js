@@ -1,17 +1,14 @@
 const {
-  // routeIsAbsolute,
   relativeToAbsolute,
   routeExist,
-  // extension,
-  // validateExt,
   readMd,
   extractLinks,
   validateLinks,
-  statsLinks
-} = require("./function");
+  statsLinks,
+} = require('./function');
 
 const mdLinks = (path, validate, stats) => {
-  // resolve y reject son funciones que se convierten en callbacks en el then y el catch
+// resolve y reject son funciones que se convierten en callbacks en el then y el catch
   return new Promise((resolve, reject) => {
     const routeAbsolute = relativeToAbsolute(path);
 
@@ -21,7 +18,6 @@ const mdLinks = (path, validate, stats) => {
       .then((data) => {
         const linksExtracted = extractLinks(data, routeAbsolute);
         if (validate && stats) {
-            // const linksValidate = validateLinks(linksExtracted, stats);
             const linksBroken = statsLinks(linksExtracted, true);
             resolve(linksBroken);
           } else if(validate){
