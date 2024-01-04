@@ -1,6 +1,5 @@
-const { validateLinks, statsLinks } = require('../src/function');
-
 const axios = require('axios');
+const { validateLinks, statsLinks } = require('../src/function');
 
 jest.mock('axios');
 
@@ -18,9 +17,7 @@ describe('functions', () => {
         file: 'C:\\Users\\tacig\\OneDrive\\TATIS\\Documentos\\Tatis\\Educación\\Cursos y Capacitaciones\\Laboratoria\\Bootcamp Desarrollo Web\\Proyectos\\Proyecto 4 Md Links\\DEV011-md-links\\test\\ReadMePrueba.md',
       },
     ];
-    axios.get.mockImplementation(() =>
-      Promise.resolve({ status: 200, statusText: 'OK' })
-    );
+    axios.get.mockImplementation(() => Promise.resolve({ status: 200, statusText: 'OK' }));
     const validate = validateLinks(array);
     validate.then((links) => {
       expect(links).toEqual([
